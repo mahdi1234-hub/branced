@@ -124,9 +124,14 @@ export default function FormStepComponent({
         return (
           <div className="space-y-2">
             {field.options?.map((opt) => (
-              <label
+              <div
                 key={opt.value}
-                className={`flex items-center gap-3 p-3 rounded-sm border cursor-pointer transition-all duration-300 ${
+                onClick={() => onFieldChange(field.id, opt.value)}
+                role="radio"
+                aria-checked={value === opt.value}
+                tabIndex={0}
+                onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") onFieldChange(field.id, opt.value); }}
+                className={`flex items-center gap-3 p-3 rounded-sm border cursor-pointer transition-all duration-300 select-none ${
                   value === opt.value
                     ? "border-stone-900 bg-stone-50"
                     : "border-stone-200 hover:border-stone-300"
@@ -146,21 +151,32 @@ export default function FormStepComponent({
                   )}
                 </div>
                 <span className="text-sm font-light">{opt.label}</span>
-              </label>
+              </div>
             ))}
           </div>
         );
 
-      case "checkbox":
-        const checkedValues = Array.isArray(value) ? value : [];
+      case "checkbox": {
+        const checkedValues = Array.isArray(value) ? (value as string[]) : [];
         return (
           <div className="space-y-2">
             {field.options?.map((opt) => {
               const isChecked = checkedValues.includes(opt.value);
+              const toggleCheckbox = () => {
+                const newValues = isChecked
+                  ? checkedValues.filter((v) => v !== opt.value)
+                  : [...checkedValues, opt.value];
+                onFieldChange(field.id, newValues);
+              };
               return (
-                <label
+                <div
                   key={opt.value}
-                  className={`flex items-center gap-3 p-3 rounded-sm border cursor-pointer transition-all duration-300 ${
+                  onClick={toggleCheckbox}
+                  role="checkbox"
+                  aria-checked={isChecked}
+                  tabIndex={0}
+                  onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") toggleCheckbox(); }}
+                  className={`flex items-center gap-3 p-3 rounded-sm border cursor-pointer transition-all duration-300 select-none ${
                     isChecked
                       ? "border-stone-900 bg-stone-50"
                       : "border-stone-200 hover:border-stone-300"
@@ -185,11 +201,12 @@ export default function FormStepComponent({
                     )}
                   </div>
                   <span className="text-sm font-light">{opt.label}</span>
-                </label>
+                </div>
               );
             })}
           </div>
         );
+      }
 
       case "range":
         return (
