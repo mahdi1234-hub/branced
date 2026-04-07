@@ -1,36 +1,110 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# BRANCED - AI-Powered Flipbook Assistant
+
+An end-to-end AI assistant powered by **Cerebras LLM** that guides users step-by-step through any domain or subject, presented in an interactive flipbook format with rich animations and data visualizations.
+
+## Live Demo
+
+**[https://branced-alpha.vercel.app](https://branced-alpha.vercel.app)**
+
+## Features
+
+### AI Guidance Engine
+- **Cerebras LLM Integration** (Llama 4 Scout) for intelligent, context-aware guidance
+- Step-by-step guidance with suggestions, follow-ups, and key findings
+- Domain-agnostic: works for any subject or field
+- Maintains conversation context throughout the session
+
+### Interactive Flipbook
+- **Page-flip animations** using Framer Motion spring physics and GSAP
+- Smooth 3D page transitions with perspective transforms
+- Keyboard navigation (arrow keys) and progress indicators
+- NOVERA-inspired luxury design aesthetic
+
+### Multi-Step Onboarding Form
+- **Conditional logic**: Fields appear/hide based on previous answers
+- **Variables and calculations**: Priority score computed from urgency + experience
+- **Multiple field types**: Text, textarea, select, radio, checkbox, range, number
+- **Validation**: Required fields with visual feedback
+- **Multiple endings**: Different guidance paths based on form inputs
+
+### Data Visualization (Results Flipbook)
+- **Nivo Charts**: Bar charts, pie charts, line charts, radar charts
+- **D3.js**: Custom animated gauge chart with arc transitions
+- Risk level indicator with animated progress bar
+- Key findings and recommendations display
+- Score breakdown across multiple dimensions
+
+### Design & Animations
+- **GSAP**: Hero text reveal animation, parallax effects, search bar intro
+- **Framer Motion**: Page transitions, staggered item animations, presence animations
+- **NOVERA Theme**: Stone color palette, Playfair Display serif headings, Inter sans-serif body
+- Floating particle effects, gradient backgrounds
+- Responsive design for mobile and desktop
+
+## Tech Stack
+
+| Category | Technology |
+|----------|-----------|
+| Framework | Next.js 16 (App Router, TypeScript) |
+| AI/LLM | Cerebras API (Llama 4 Scout 17B) |
+| Styling | Tailwind CSS v4 |
+| Animation | Framer Motion, GSAP |
+| Charts | Nivo (Bar, Pie, Line, Radar), D3.js |
+| Deployment | Vercel |
 
 ## Getting Started
 
-First, run the development server:
-
 ```bash
+# Clone the repository
+git clone https://github.com/mahdi1234-hub/branced.git
+cd branced
+
+# Install dependencies
+npm install
+
+# Set up environment variables
+cp .env.example .env.local
+# Edit .env.local and add your Cerebras API key
+
+# Run development server
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Environment Variables
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+| Variable | Description |
+|----------|-----------|
+| `CEREBRAS_API_KEY` | Your Cerebras API key for LLM access |
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Architecture
 
-## Learn More
+```
+src/
+  app/
+    page.tsx          # Main app with 4 phases: Landing, Onboarding, Guidance, Results
+    layout.tsx        # Root layout with fonts and metadata
+    globals.css       # Global styles (Tailwind v4, custom classes)
+    api/
+      chat/
+        route.ts      # Cerebras LLM API endpoint
+  components/
+    Flipbook.tsx      # Page-flip animation component (GSAP + Framer Motion)
+    FormStep.tsx      # Multi-step form with conditional logic
+    ChatInterface.tsx # AI chat with formatted message types
+    Charts.tsx        # Nivo + D3.js visualization components
+  lib/
+    types.ts          # TypeScript type definitions
+    store.ts          # Simple state management
+    form-config.ts    # Form steps, conditions, and calculations
+```
 
-To learn more about Next.js, take a look at the following resources:
+## User Flow
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. **Landing Page** - NOVERA-inspired hero with GSAP text reveal animation
+2. **Onboarding Flipbook** - 4-step form with conditional logic, collected in a page-flip flipbook
+3. **AI Guidance Chat** - Interactive conversation with Cerebras LLM, context-aware follow-ups
+4. **Results Flipbook** - Analysis presented in a flipbook with Nivo charts, D3.js gauges, recommendations
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## License
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+MIT
